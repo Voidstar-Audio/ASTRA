@@ -1,0 +1,25 @@
+[package]
+name = "all_views"
+version = "0.1.0"
+edition = "2021"
+authors = ["Voidstar Audio <exa04@pm.me>"]
+license = "GPL-3.0-or-later"
+homepage = "https://voidstaraudio.com"
+description = "All views"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git", features = ["assert_process_allocs", "standalone"] }
+nih_plug_vizia = { git = "https://github.com/robbert-vdh/nih-plug.git" }
+astra = { path = "../.." }
+
+[profile.release]
+lto = "thin"
+strip = "symbols"
+
+[profile.profiling]
+inherits = "release"
+debug = true
+strip = "none"

@@ -1,0 +1,696 @@
+$gray-50: rgb(239, 240, 246);
+$gray-100: rgb(219, 221, 229);
+$gray-200: rgb(192, 195, 204);
+$gray-300: rgb(164, 167, 177);
+$gray-400: rgb(138, 141, 150);
+$gray-500: rgb(112, 114, 124);
+$gray-600: rgb(85, 88, 97);
+$gray-700: rgb(59, 62, 73);
+$gray-800: rgb(43, 45, 54);
+$gray-900: rgb(24, 25, 32);
+$gray-950: rgb(0, 0, 0);
+
+$text-sm: 8;
+$text-md: 10;
+$text-lg: 12;
+$text-xl: 16;
+$text-2xl: 20;
+$text-3xl: 24;
+$text-4xl: 30;
+$text-5xl: 38;
+
+$font: "Voidstar Mono";
+$component-size: 14px;
+
+* {
+    font-family: $font;
+    font-size: $text-md;
+}
+
+button:focus-visible,
+dropdown .title:focus-visible,
+switch:focus-visible .switch-handle-bg,
+checkbox:focus-visible,
+radiobutton:focus-visible,
+paramslider:focus-visible .track {
+    z-index: 9001;
+}
+
+image {
+    background-size: cover;
+}
+
+button {
+    height: $component-size;
+    border-width: 1px;
+    child-space: 0px;
+
+    & > .inner {
+        min-left: 4px;
+        min-right: 4px;
+        top: 1s;
+        bottom: 1s;
+    }
+
+    &.large {
+        height: 18px;
+        & > .inner {
+            min-left: 6px;
+            min-right: 6px;
+        }
+    }
+}
+
+dropdown {
+    height: $component-size;
+
+    width: auto;
+    alignment: center;
+
+    .title {
+        width: auto;
+        alignment: center;
+        height: $component-size;
+        border-width: 1px;
+        child-left: 4px;
+        child-right: 4px;
+    }
+}
+
+paramdropdown {
+    dropdown {
+        width: 100%;
+        popup {
+            label {
+                width: 1s;
+                child-left: 4px;
+            }
+        }
+    }
+    height: $component-size;
+}
+
+popup {
+    border-width: 1px;
+}
+
+textbox {
+    child-left: 4px;
+    child-right: 4px;
+    font-family: $font;
+    height: $component-size;
+}
+
+paramslider {
+    height: auto;
+
+    .title {
+        height: 10px;
+        child-top: -3px;
+
+        .name {
+            width: 1s;
+        }
+        .value {
+            width: auto;
+        }
+    }
+
+    .track {
+        height: $component-size;
+        border-width: 1px;
+        child-left: -0.5px;
+        child-right: -0.5px;
+    }
+
+    .ticks {
+        right: 1px;
+        height: 12px;
+        .tick {
+            height: 4px;
+            width: 1px;
+            &.short {
+                height: 3px;
+            }
+        }
+        .tick-label {
+            height: 6px;
+            font-size: $text-sm;
+        }
+    }
+
+    &:focus-visible .tick {
+        transform: translateY(2px);
+    }
+}
+
+switch {
+    height: $component-size;
+    width: $component-size * 2;
+
+    $transition-duration: 200ms;
+    $transition-timing: cubic-bezier(0.16, 1, 0.3, 1);
+
+    .switch-handle-bg {
+        border-width: 1px;
+        height: $component-size;
+        width: $component-size * 2;
+    }
+    .switch-handle {
+        size: $component-size - 4px;
+        left: 2px;
+        top: 2px;
+        transition: left $transition-duration $transition-timing;
+    }
+    &:checked .switch-handle {
+        left: 16px;
+        transition: left $transition-duration $transition-timing;
+    }
+}
+
+paramswitch {
+    height: $component-size;
+    width: $component-size * 2;
+}
+
+checkbox {
+    border-width: 1px;
+    size: $component-size;
+}
+
+radiobutton {
+    size: $component-size;
+    border-width: 1px;
+    border-radius: 50%;
+}
+
+radiobutton .inner {
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+}
+
+radiobutton:checked .inner {
+    width: $component-size - 6px;
+    height: $component-size - 6px;
+}
+
+tag {
+    height: $component-size;
+    child-left: 6px;
+    child-right: 6px;
+    border-radius: 50%;
+    width: auto;
+    alignment: center;
+    & > * {
+        width: auto;
+        alignment: center;
+    }
+}
+
+selector {
+    height: $component-size;
+    border-width: 1px;
+    width: auto;
+    hstack {
+        width: auto;
+        button {
+            border-width: 0px;
+            height: 1s;
+            width: auto;
+        }
+    }
+}
+
+scrollview {
+    & > scrollbar {
+        display: none;
+    }
+    &:checked > scrollbar {
+        display: flex;
+    }
+    scrollbar {
+        background-color: transparent;
+    }
+    scrollbar.horizontal {
+        height: 8px;
+    }
+    scrollbar.vertical {
+        width: 8px;
+    }
+    scrollbar .thumb {
+        opacity: 0;
+        transition: opacity 200ms 200ms linear;
+    }
+    scrollbar.horizontal .thumb {
+        height: 1s;
+    }
+    scrollbar.vertical .thumb {
+        width: 1s;
+    }
+    &:checked > scrollbar:over .thumb {
+        opacity: 1;
+        transition: opacity 20ms;
+    }
+    &:checked:active scrollbar .thumb {
+        opacity: 1;
+        transition: opacity 0ms;
+    }
+    &:checked > scrollbar:active .thumb {
+        opacity: 1;
+        transition: opacity 0ms;
+    }
+}
+
+.divider {
+    &.horizontal {
+        height: 1px;
+        width: 1s;
+    }
+    &.vertical {
+        height: 1s;
+        width: 1px;
+    }
+}
+
+:root {
+    color: $gray-950;
+    background-color: $gray-100;
+
+    $red: rgb(208, 10, 10);
+    $orange: rgb(216, 92, 0);
+    $yellow: rgb(216, 172, 15);
+    $green: rgb(7, 162, 21);
+    $cyan: rgb(10, 169, 183);
+    $blue: rgb(32, 121, 209);
+    $violet: rgb(149, 72, 203);
+    $pink: rgb(198, 49, 151);
+
+    .bg-red {
+        background-color: $red;
+        color: $gray-50;
+    }
+    .bg-orange {
+        background-color: $orange;
+        color: $gray-50;
+    }
+    .bg-yellow {
+        background-color: $yellow;
+        color: $gray-50;
+    }
+    .bg-green {
+        background-color: $green;
+        color: $gray-50;
+    }
+    .bg-cyan {
+        background-color: $cyan;
+        color: $gray-50;
+    }
+    .bg-blue {
+        background-color: $blue;
+        color: $gray-50;
+    }
+    .bg-violet {
+        background-color: $violet;
+        color: $gray-50;
+    }
+    .bg-pink {
+        background-color: $pink;
+        color: $gray-50;
+    }
+
+    .fg-red {
+        color: $red;
+    }
+    .fg-orange {
+        color: $orange;
+    }
+    .fg-yellow {
+        color: $yellow;
+    }
+    .fg-green {
+        color: $green;
+    }
+    .fg-cyan {
+        color: $cyan;
+    }
+    .fg-blue {
+        color: $blue;
+    }
+    .fg-violet {
+        color: $violet;
+    }
+    .fg-pink {
+        color: $pink;
+    }
+
+    .disabled {
+        color: $gray-500;
+    }
+
+    .bg-elevated {
+        background-color: $gray-50;
+    }
+
+    button:focus-visible,
+    dropdown .title:focus-visible,
+    switch:focus-visible .switch-handle-bg,
+    checkbox:focus-visible,
+    radiobutton:focus-visible,
+    paramslider:focus-visible .track {
+        box-shadow:
+            0px 0px 0px 1.5px $gray-50,
+            0px 0px 0px 3px $gray-950;
+    }
+    * {
+        border-color: $gray-950;
+    }
+    button,
+    dropdown .title {
+        background-color: $gray-50;
+        &:active {
+            background-color: $gray-100;
+        }
+        &.on {
+            background-color: $gray-200;
+        }
+        &.primary {
+            background-color: $gray-950;
+            color: $gray-50;
+            &:active {
+                background-color: $gray-700;
+            }
+        }
+        &.destructive {
+            background-color: $red;
+            color: $gray-50;
+            border-color: $red;
+            &:active {
+                background-color: darken($red, 10%);
+            }
+        }
+    }
+    paramdropdown {
+        .value {
+            width: 1s;
+        }
+        dropdown popup label {
+            &:hover {
+                background-color: $gray-100;
+            }
+            &.selected {
+                background-color: $gray-200;
+            }
+        }
+    }
+    popup {
+        background-color: $gray-100;
+        box-shadow: 4px 4px 0px 0px $gray-950;
+    }
+    textbox {
+        background-color: $gray-50;
+        box-shadow: 0px -1px 0px 0px $gray-950 inset;
+    }
+    paramslider {
+        .value {
+            color: $gray-700;
+        }
+        .track {
+            background-color: $gray-50;
+            .slider {
+                background-color: $gray-300;
+            }
+            .head {
+                background-color: $gray-950;
+            }
+        }
+        .ticks .tick {
+            background-color: $gray-950;
+        }
+    }
+    switch {
+        .switch-handle-bg {
+            background-color: $gray-50;
+        }
+        &:checked .switch-handle-bg {
+            background-color: $gray-950;
+        }
+        &:active .switch-handle-bg {
+            background-color: $gray-100;
+        }
+        &:checked:active .switch-handle-bg {
+            background-color: $gray-700;
+        }
+        .switch-handle {
+            background-color: $gray-950;
+        }
+        &:checked .switch-handle {
+            background-color: $gray-50;
+        }
+    }
+    switch.disabled,
+    .disabled switch {
+        pointer-events: none;
+        * {
+            border-color: $gray-600;
+        }
+        .switch-handle-bg,
+        &:checked .switch-handle-bg {
+            background-color: $gray-100;
+        }
+        .switch-handle,
+        &:checked .switch-handle {
+            background-color: $gray-600;
+        }
+    }
+    checkbox {
+        background-color: $gray-50;
+        &:active {
+            background-color: $gray-100;
+        }
+    }
+    radiobutton {
+        color: $gray-950;
+        background-color: $gray-50;
+        &:active {
+            background-color: $gray-100;
+        }
+        .inner {
+            background-color: $gray-950;
+        }
+        &:checked .inner {
+            background-color: $gray-950;
+        }
+    }
+    tag {
+        background-color: $gray-200;
+        &.primary {
+            background-color: $gray-950;
+            color: $gray-50;
+        }
+    }
+    scrollbar .thumb {
+        background-color: $gray-300;
+    }
+    .divider {
+        background-color: $gray-950;
+    }
+    oscilloscope {
+        color: $gray-500;
+        &.overlay {
+            opacity: 0.33;
+        }
+    }
+    grid {
+        color: $gray-950;
+        opacity: 0.05;
+    }
+    unit-ruler label {
+        font-size: $text-sm;
+    }
+}
+
+.dark {
+    color: $gray-50;
+    background-color: $gray-900;
+
+    $red: #ff3b3b;
+    $orange: #ff8316;
+    $yellow: #f6f615;
+    $green: #26f638;
+    $cyan: #3ceefe;
+    $blue: #3e8eff;
+    $violet: #af3fff;
+    $pink: #f658c4;
+
+    .bg-red {
+        background-color: $red;
+        color: $gray-950;
+    }
+    .bg-orange {
+        background-color: $orange;
+        color: $gray-950;
+    }
+    .bg-yellow {
+        background-color: $yellow;
+        color: $gray-950;
+    }
+    .bg-green {
+        background-color: $green;
+        color: $gray-950;
+    }
+    .bg-cyan {
+        background-color: $cyan;
+        color: $gray-950;
+    }
+    .bg-blue {
+        background-color: $blue;
+        color: $gray-950;
+    }
+    .bg-violet {
+        background-color: $violet;
+        color: $gray-950;
+    }
+    .bg-pink {
+        background-color: $pink;
+        color: $gray-950;
+    }
+
+    .bg-elevated {
+        background-color: $gray-800;
+    }
+
+    button:focus-visible,
+    dropdown .title:focus-visible,
+    switch:focus-visible .switch-handle-bg,
+    checkbox:focus-visible,
+    radiobutton:focus-visible,
+    paramslider:focus-visible .track {
+        box-shadow:
+            0px 0px 0px 1.5px $gray-950,
+            0px 0px 0px 3px $gray-500;
+    }
+
+    * {
+        border-color: $gray-500;
+    }
+
+    button {
+        background-color: $gray-800;
+        &:active {
+            background-color: $gray-700;
+        }
+        &.on {
+            background-color: $gray-600;
+        }
+        &.primary {
+            background-color: $gray-100;
+            color: $gray-950;
+            border-color: $gray-100;
+            &:active {
+                background-color: $gray-200;
+            }
+        }
+        &.destructive {
+            background-color: $red;
+            color: $gray-950;
+            border-color: $red;
+            &:active {
+                background-color: lighten($red, 10%);
+            }
+        }
+    }
+    dropdown {
+        .title {
+            background-color: $gray-800;
+            &:active {
+                background-color: $gray-700;
+            }
+        }
+    }
+    paramdropdown dropdown popup label {
+        &:hover {
+            background-color: $gray-700;
+        }
+        &.selected {
+            background-color: $gray-600;
+        }
+    }
+    popup {
+        background-color: $gray-800;
+    }
+    textbox {
+        background-color: $gray-800;
+        box-shadow: 0px -1px 0px 0px $gray-500 inset;
+    }
+    paramslider {
+        .value {
+            color: $gray-300;
+        }
+        .track {
+            background-color: $gray-800;
+            .slider {
+                background-color: $gray-600;
+            }
+            .head {
+                background-color: $gray-500;
+            }
+        }
+        .ticks .tick {
+            background-color: $gray-500;
+        }
+    }
+    switch {
+        .switch-handle-bg {
+            background-color: $gray-800;
+        }
+        &:checked .switch-handle-bg {
+            background-color: $gray-100;
+            border-color: $gray-100;
+        }
+        &:active .switch-handle-bg {
+            background-color: $gray-700;
+        }
+        &:checked:active .switch-handle-bg {
+            background-color: $gray-200;
+        }
+        .switch-handle {
+            background-color: $gray-100;
+        }
+        &:checked .switch-handle {
+            background-color: $gray-950;
+        }
+    }
+    checkbox {
+        background-color: $gray-800;
+        &:active {
+            background-color: $gray-700;
+        }
+    }
+    radiobutton {
+        color: $gray-100;
+        background-color: $gray-800;
+        &:active {
+            background-color: $gray-700;
+        }
+        .inner {
+            background-color: $gray-100;
+        }
+        &:checked .inner {
+            background-color: $gray-100;
+        }
+    }
+    tag {
+        background-color: $gray-700;
+        &.primary {
+            background-color: $gray-100;
+            color: $gray-950;
+        }
+    }
+    scrollbar .thumb {
+        background-color: $gray-600;
+    }
+    .divider {
+        background-color: $gray-600;
+    }
+}
