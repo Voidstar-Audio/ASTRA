@@ -155,8 +155,8 @@ switch {
     height: $component-size;
     width: $component-size * 2;
 
-    $transition-duration: 200ms;
-    $transition-timing: cubic-bezier(0.16, 1, 0.3, 1);
+    $transition-duration: 150ms;
+    $transition-timing: cubic-bezier(0.25, 1, 0.5, 1);
 
     .switch-handle-bg {
         border-width: 1px;
