@@ -57,7 +57,7 @@ pub(crate) fn create(
 ) -> Option<Box<dyn Editor>> {
     let h = height.clone();
     create_vizia_editor(
-        ViziaState::new(move || (600, h.load(std::sync::atomic::Ordering::Relaxed))),
+        ViziaState::new(move || (800, h.load(std::sync::atomic::Ordering::Relaxed))),
         ViziaTheming::None,
         move |cx, gui| {
             apply_styles(cx);
@@ -92,6 +92,7 @@ pub(crate) fn create(
                         Button::new(cx, |_| {}, |cx| Label::new(cx, "PRIMARY")).class("primary");
                         Button::new(cx, |_| {}, |cx| Label::new(cx, "DESTRUCTIVE"))
                             .class("destructive");
+                        Button::new(cx, |_| {}, |cx| Label::new(cx, "GHOST")).class("ghost");
                         Button::new(cx, |_| {}, |cx| Label::new(cx, "REGULAR LARGE"))
                             .class("large");
                         Button::new(cx, |_| {}, |cx| Label::new(cx, "PRIMARY LARGE"))
@@ -99,6 +100,9 @@ pub(crate) fn create(
                             .class("large");
                         Button::new(cx, |_| {}, |cx| Label::new(cx, "DESTRUCTIVE LARGE"))
                             .class("destructive")
+                            .class("large");
+                        Button::new(cx, |_| {}, |cx| Label::new(cx, "GHOST LARGE"))
+                            .class("ghost")
                             .class("large");
                     });
 

@@ -48,7 +48,7 @@ impl Default for ViewsPluginParams {
             .with_unit(" dB")
             .with_value_to_string(formatters::v2s_f32_rounded(2)),
             shape: EnumParam::new("Waveshape", Waveshape::Sine),
-            height: Arc::new(500.into()),
+            height: Arc::new(700.into()),
         }
     }
 }
