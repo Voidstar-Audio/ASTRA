@@ -439,20 +439,21 @@ scrollview {
                 background-color: darken($red, 10%);
             }
         }
+    }
 
-        &.ghost {
-            background-color: transparent;
-            border-color: transparent;
-            &:hover {
-                background-color: $gray-50;
-                border-color: $gray-950;
-            }
-            &:active {
-                background-color: $gray-100;
-            }
-            &.on {
-                background-color: $gray-200;
-            }
+    button.ghost,
+    dropdown.ghost .title {
+        background-color: transparent;
+        border-color: transparent;
+        &:hover {
+            background-color: $gray-50;
+            border-color: $gray-950;
+        }
+        &:active {
+            background-color: $gray-100;
+        }
+        &.on {
+            background-color: $gray-200;
         }
     }
 
