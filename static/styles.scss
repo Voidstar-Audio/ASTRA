@@ -76,6 +76,11 @@ dropdown {
         child-left: 4px;
         child-right: 4px;
     }
+
+    popup label.option {
+        width: 1s;
+        child-left: 4px;
+    }
 }
 
 paramdropdown {
@@ -395,8 +400,9 @@ scrollview {
     checkbox:focus-visible,
     radiobutton:focus-visible,
     paramslider:focus-visible .track {
-        box-shadow: 0px 0px 0px 1.5px $gray-50,
-        0px 0px 0px 3px $gray-950;
+        box-shadow:
+            0px 0px 0px 1.5px $gray-50,
+            0px 0px 0px 3px $gray-950;
     }
 
     * {
@@ -435,25 +441,29 @@ scrollview {
         }
     }
 
+    dropdown popup label.option,
+    paramdropdown dropdown popup label {
+        background-color: $gray-50;
+        &:hover {
+            background-color: $gray-100;
+        }
+        &:active {
+            background-color: $gray-200;
+        }
+        &.selected {
+            background-color: $gray-200;
+        }
+    }
+
     paramdropdown {
         .value {
             width: 1s;
-        }
-
-        dropdown popup label {
-            &:hover {
-                background-color: $gray-100;
-            }
-
-            &.selected {
-                background-color: $gray-200;
-            }
         }
     }
 
     popup {
         background-color: $gray-100;
-        box-shadow: 4px 4px 0px 0px $gray-950;
+        box-shadow: 2px 2px 0px 0px $gray-950;
     }
 
     textbox {
@@ -651,8 +661,9 @@ scrollview {
     checkbox:focus-visible,
     radiobutton:focus-visible,
     paramslider:focus-visible .track {
-        box-shadow: 0px 0px 0px 1.5px $gray-950,
-        0px 0px 0px 3px $gray-500;
+        box-shadow:
+            0px 0px 0px 1.5px $gray-950,
+            0px 0px 0px 3px $gray-500;
     }
 
     * {
@@ -708,6 +719,27 @@ scrollview {
 
         &.selected {
             background-color: $gray-600;
+        }
+    }
+
+    dropdown popup label.option,
+    paramdropdown dropdown popup label {
+        background-color: $gray-800;
+
+        &:hover {
+            background-color: $gray-700;
+        }
+        &:active {
+            background-color: $gray-600;
+        }
+        &.selected {
+            background-color: $gray-600;
+        }
+    }
+
+    paramdropdown {
+        .value {
+            width: 1s;
         }
     }
 

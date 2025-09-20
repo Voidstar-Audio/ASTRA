@@ -1,4 +1,5 @@
 pub mod param_dropdown;
+pub mod param_selector;
 pub mod param_slider;
 pub mod param_switch;
 pub mod selector;
@@ -8,8 +9,8 @@ use nih_plug_vizia::vizia::{image, prelude::*};
 
 pub mod prelude {
     pub use crate::{
-        apply_styles, basics::*, param_dropdown::*, param_slider::*, param_switch::*, selector::*,
-        tag::*,
+        apply_styles, basics::*, param_dropdown::*, param_selector::*, param_slider::*,
+        param_switch::*, selector::*, tag::*,
     };
 }
 

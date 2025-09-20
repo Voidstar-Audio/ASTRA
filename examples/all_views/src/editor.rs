@@ -1,6 +1,9 @@
-use std::sync::{atomic::AtomicU32, Arc};
+use std::{
+    fmt::Pointer,
+    sync::{atomic::AtomicU32, Arc},
+};
 
-use nih_plug::editor::Editor;
+use nih_plug::{editor::Editor, prelude::Enum};
 use nih_plug_vizia::{
     create_vizia_editor,
     vizia::{icons::ICON_CHEVRON_DOWN, prelude::*},
@@ -11,17 +14,27 @@ use astra::prelude::*;
 
 use crate::ViewsPluginParams;
 
+#[derive(Enum, Clone, Default)]
+enum FooEnum {
+    #[default]
+    Foo,
+    Bar,
+    Baz,
+}
+
 #[derive(Lens)]
 struct Data {
     params: Arc<ViewsPluginParams>,
     text: String,
     switch: bool,
+    foo: FooEnum,
     dark_mode: bool,
 }
 
 enum AppEvent {
     ToggleSwitch,
     ToggleDarkMode,
+    SwitchFoo(usize),
 }
 
 impl Model for Data {
@@ -33,6 +46,7 @@ impl Model for Data {
             AppEvent::ToggleDarkMode => {
                 self.dark_mode ^= true;
             }
+            AppEvent::SwitchFoo(i) => self.foo = FooEnum::from_index(*i),
         });
     }
 }
@@ -52,6 +66,7 @@ pub(crate) fn create(
                 params: params.clone(),
                 text: "Test".to_owned(),
                 switch: false,
+                foo: Default::default(),
                 dark_mode: false,
             }
             .build(cx);
@@ -72,27 +87,6 @@ pub(crate) fn create(
                 .height(Auto);
 
                 ScrollView::new(cx, 0.0, 0.0, false, true, move |cx| {
-                    components(cx, "SLIDER", |cx| {
-                        ParamSlider::new(cx, Data::params, |p| &p.gain, None).width(Pixels(160.0));
-                        ParamSlider::new(
-                            cx,
-                            Data::params,
-                            |p| &p.gain,
-                            (0..=16).map(|i| {
-                                let pos = i as f32 / 16.0;
-                                let value = (-24.0 + 48.0 * pos) as i32;
-                                let short = value % 2 != 0;
-
-                                SliderTick {
-                                    pos,
-                                    label: (!short).then_some(format!("{value:.2}")),
-                                    short,
-                                }
-                            }),
-                        )
-                        .width(Pixels(160.0));
-                    });
-
                     components(cx, "BUTTON", move |cx| {
                         Button::new(cx, |_| {}, |cx| Label::new(cx, "REGULAR"));
                         Button::new(cx, |_| {}, |cx| Label::new(cx, "PRIMARY")).class("primary");
@@ -117,7 +111,7 @@ pub(crate) fn create(
                             cx,
                             |cx| {
                                 HStack::new(cx, |cx| {
-                                    Label::new(cx, "EXPAND ME")
+                                    Label::new(cx, "BASIC TEXT")
                                         .width(Stretch(1.0))
                                         .pointer_events(false);
                                     Label::new(cx, ICON_CHEVRON_DOWN).pointer_events(false);
@@ -130,6 +124,42 @@ pub(crate) fn create(
                             },
                         )
                         .width(Pixels(90.0));
+
+                        Dropdown::new(
+                            cx,
+                            |cx| {
+                                HStack::new(cx, |cx| {
+                                    Label::new(
+                                        cx,
+                                        Data::foo
+                                            .map(|foo| FooEnum::variants()[foo.clone().to_index()]),
+                                    )
+                                    .width(Stretch(1.0))
+                                    .pointer_events(false);
+                                    Label::new(cx, ICON_CHEVRON_DOWN).pointer_events(false);
+                                })
+                            },
+                            |cx| {
+                                for (i, variant) in FooEnum::variants().iter().enumerate() {
+                                    Label::new(cx, *variant)
+                                        .on_press(move |cx| {
+                                            cx.emit(AppEvent::SwitchFoo(i));
+                                            cx.emit(PopupEvent::Close);
+                                        })
+                                        .class("option")
+                                        .toggle_class(
+                                            "selected",
+                                            Data::foo.map(move |foo| foo.clone().to_index() == i),
+                                        );
+                                }
+                            },
+                        )
+                        .width(Pixels(90.0));
+                    });
+
+                    components(cx, "SELECTOR", |cx| {
+                        Selector::new(cx, Data::foo)
+                            .on_toggle(|cx, i| cx.emit(AppEvent::SwitchFoo(i)));
                     });
 
                     components(cx, "SWITCH", |cx| {
@@ -189,12 +219,33 @@ pub(crate) fn create(
                         .class("bg-pink");
                     });
 
-                    components(cx, "SELECTOR", |cx| {
-                        Selector::new(cx, Data::params, |params| &params.shape);
-                    });
-
                     components(cx, "PARAMETER DROPDOWN", |cx| {
                         ParamDropdown::new(cx, Data::params, |p| &p.shape).width(Pixels(64.0));
+                    });
+
+                    components(cx, "PARAMETER SELECTOR", |cx| {
+                        ParamSelector::new(cx, Data::params, |params| &params.shape);
+                    });
+
+                    components(cx, "PARAMETER SLIDER", |cx| {
+                        ParamSlider::new(cx, Data::params, |p| &p.gain, None).width(Pixels(160.0));
+                        ParamSlider::new(
+                            cx,
+                            Data::params,
+                            |p| &p.gain,
+                            (0..=16).map(|i| {
+                                let pos = i as f32 / 16.0;
+                                let value = (-24.0 + 48.0 * pos) as i32;
+                                let short = value % 2 != 0;
+
+                                SliderTick {
+                                    pos,
+                                    label: (!short).then_some(format!("{value:.2}")),
+                                    short,
+                                }
+                            }),
+                        )
+                        .width(Pixels(160.0));
                     });
                 });
             })

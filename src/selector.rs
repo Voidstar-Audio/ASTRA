@@ -1,48 +1,44 @@
-use nih_plug::prelude::*;
-use nih_plug_vizia::{vizia::prelude::*, widgets::param_base::ParamWidgetBase};
+use nih_plug::params::enums::Enum;
+use nih_plug_vizia::vizia::prelude::*;
 
 enum SelectorEvent {
-    SetTo(f32),
+    Update(usize),
 }
 
 #[derive(Lens)]
 pub struct Selector {
-    param_base: ParamWidgetBase,
+    on_toggle_action: Option<Box<dyn Fn(&mut EventContext, usize)>>,
 }
 
 impl Selector {
-    pub fn new<L, Params, P, FMap>(
-        cx: &mut Context,
-        params: L,
-        params_to_param: FMap,
-    ) -> Handle<Self>
-    where
-        L: Lens<Target = Params> + Clone,
-        Params: 'static,
-        P: Param + 'static,
-        FMap: Fn(&Params) -> &P + Copy + 'static,
-    {
+    pub fn new<E: Enum + Clone>(cx: &mut Context, data: impl Lens<Target = E>) -> Handle<Self> {
         Self {
-            param_base: ParamWidgetBase::new(cx, params, params_to_param),
+            on_toggle_action: None,
         }
-        .build(
-            cx,
-            ParamWidgetBase::build_view(params, params_to_param, move |cx, param_data| {
-                HStack::new(cx, |cx| {
-                    let step_count = param_data.param().step_count().unwrap_or_default();
-                    for value in (0..=step_count).map(|v| v as f32 / step_count as f32) {
-                        let formatted = param_data.param().normalized_value_to_string(value, false);
-                        Button::new(cx, |_| {}, |cx| Label::new(cx, formatted.as_str()))
-                            .on_press(move |cx| cx.emit(SelectorEvent::SetTo(value)))
-                            .toggle_class(
-                                "on",
-                                param_data
-                                    .make_lens(move |p| p.modulated_normalized_value() == value),
-                            );
-                    }
-                });
-            }),
-        )
+        .build(cx, |cx| {
+            HStack::new(cx, |cx| {
+                for (i, variant) in E::variants().iter().enumerate() {
+                    Button::new(cx, |_| {}, |cx| Label::new(cx, *variant))
+                        .on_press(move |cx| cx.emit(SelectorEvent::Update(i)))
+                        .toggle_class("on", data.map(move |d| d.clone().to_index() == i));
+                }
+            });
+        })
+    }
+}
+
+pub trait SelectorModifiers {
+    fn on_toggle<F>(self, callback: F) -> Self
+    where
+        F: 'static + Fn(&mut EventContext, usize);
+}
+
+impl SelectorModifiers for Handle<'_, Selector> {
+    fn on_toggle<F>(self, callback: F) -> Self
+    where
+        F: 'static + Fn(&mut EventContext, usize),
+    {
+        self.modify(|selector| selector.on_toggle_action = Some(Box::new(callback)))
     }
 }
 
@@ -51,12 +47,11 @@ impl View for Selector {
         Some("selector")
     }
     fn event(&mut self, cx: &mut EventContext, event: &mut Event) {
-        event.map(|param_slider_event, meta| match param_slider_event {
-            SelectorEvent::SetTo(x) => {
-                self.param_base.begin_set_parameter(cx);
-                self.param_base.set_normalized_value(cx, *x);
-                self.param_base.end_set_parameter(cx);
-                meta.consume();
+        event.map(|selector_event, _| match selector_event {
+            SelectorEvent::Update(i) => {
+                if let Some(ref f) = self.on_toggle_action {
+                    f(cx, *i);
+                }
             }
         });
     }
