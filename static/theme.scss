@@ -1,0 +1,51 @@
+$font: "Voidstar Mono";
+
+$font-sizes: (
+    "sm": 8,
+    "md": 10,
+    "lg": 12,
+    "xl": 16,
+    "2xl": 20,
+    "3xl": 24,
+    "4xl": 30,
+    "5xl": 38,
+);
+
+$component-size: 14px;
+
+$gray-50: rgb(239, 240, 246);
+$gray-100: rgb(219, 221, 229);
+$gray-200: rgb(192, 195, 204);
+$gray-300: rgb(164, 167, 177);
+$gray-400: rgb(138, 141, 150);
+$gray-500: rgb(112, 114, 124);
+$gray-600: rgb(85, 88, 97);
+$gray-700: rgb(59, 62, 73);
+$gray-800: rgb(43, 45, 54);
+$gray-900: rgb(24, 25, 32);
+$gray-950: rgb(0, 0, 0);
+
+$colors: (
+    "red": rgb(208, 10, 10),
+    "orange": rgb(216, 92, 0),
+    "yellow": rgb(216, 172, 15),
+    "green": rgb(7, 162, 21),
+    "cyan": rgb(10, 169, 183),
+    "blue": rgb(32, 121, 209),
+    "violet": rgb(149, 72, 203),
+    "pink": rgb(198, 49, 151),
+);
+
+$grays: (
+    "gray-50": $gray-50,
+    "gray-100": $gray-100,
+    "gray-200": $gray-200,
+    "gray-300": $gray-300,
+    "gray-400": $gray-400,
+    "gray-500": $gray-500,
+    "gray-600": $gray-600,
+    "gray-700": $gray-700,
+    "gray-800": $gray-800,
+    "gray-900": $gray-900,
+    "gray-950": $gray-950,
+);

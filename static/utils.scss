@@ -1,0 +1,36 @@
+@use "theme";
+
+@each $direction in ("top", "right", "bottom", "left") {
+    .fade-#{$direction} {
+        background-image: linear-gradient(
+            to #{$direction},
+            transparent,
+            transparentize(theme.$gray-50, 0.9)
+        );
+    }
+}
+
+@each $name, $color in theme.$colors {
+    .bg-#{$name} {
+        background-color: $color;
+        color: theme.$gray-50;
+    }
+    .text-#{$name} {
+        color: $color;
+    }
+}
+
+@each $name, $color in theme.$grays {
+    .bg-#{$name} {
+        background-color: $color;
+    }
+    .text-#{$name} {
+        color: $color;
+    }
+}
+
+@each $name, $size in theme.$font-sizes {
+    .text-#{$name} {
+        font-size: $size;
+    }
+}

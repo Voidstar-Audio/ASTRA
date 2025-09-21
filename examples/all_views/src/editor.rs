@@ -260,7 +260,7 @@ pub(crate) fn create(
 
 fn components(cx: &mut Context, name: &str, content: impl Fn(&mut Context)) {
     Label::new(cx, name)
-        .class("bg-elevated")
+        .class("bg-gray-50")
         .width(Stretch(1.0))
         .child_left(Pixels(16.0))
         .child_top(Pixels(8.0))

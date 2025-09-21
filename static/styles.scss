@@ -1,30 +1,16 @@
-$gray-50: rgb(239, 240, 246);
-$gray-100: rgb(219, 221, 229);
-$gray-200: rgb(192, 195, 204);
-$gray-300: rgb(164, 167, 177);
-$gray-400: rgb(138, 141, 150);
-$gray-500: rgb(112, 114, 124);
-$gray-600: rgb(85, 88, 97);
-$gray-700: rgb(59, 62, 73);
-$gray-800: rgb(43, 45, 54);
-$gray-900: rgb(24, 25, 32);
-$gray-950: rgb(0, 0, 0);
+@use "sass:map";
+@use "theme";
+@use "utils";
 
-$text-sm: 8;
-$text-md: 10;
-$text-lg: 12;
-$text-xl: 16;
-$text-2xl: 20;
-$text-3xl: 24;
-$text-4xl: 30;
-$text-5xl: 38;
-
-$font: "Voidstar Mono";
-$component-size: 14px;
+:root {
+    color: theme.$gray-950;
+    background-color: theme.$gray-100;
+}
 
 * {
-    font-family: $font;
-    font-size: $text-md;
+    font-family: theme.$font;
+    font-size: map.get(theme.$font-sizes, "md");
+    border-color: theme.$gray-950;
 }
 
 button:focus-visible,
@@ -34,16 +20,43 @@ checkbox:focus-visible,
 radiobutton:focus-visible,
 paramslider:focus-visible .track {
     z-index: 9001;
-}
-
-image {
-    background-size: cover;
+    box-shadow:
+        0px 0px 0px 1.5px theme.$gray-50,
+        0px 0px 0px 3px theme.$gray-950;
 }
 
 button {
-    height: $component-size;
+    height: theme.$component-size;
+    background-color: theme.$gray-50;
     border-width: 1px;
     child-space: 0px;
+
+    &:active {
+        background-color: theme.$gray-100;
+    }
+
+    &.on {
+        background-color: theme.$gray-200;
+    }
+
+    &.primary {
+        background-color: theme.$gray-950;
+        color: theme.$gray-50;
+
+        &:active {
+            background-color: theme.$gray-700;
+        }
+    }
+
+    &.destructive {
+        background-color: map.get(theme.$colors, "red");
+        color: theme.$gray-50;
+        border-color: map.get(theme.$colors, "red");
+
+        &:active {
+            background-color: darken(map.get(theme.$colors, "red"), 10%);
+        }
+    }
 
     & > .inner {
         min-left: 4px;
@@ -63,7 +76,7 @@ button {
 }
 
 dropdown {
-    height: $component-size;
+    height: theme.$component-size;
 
     width: auto;
     alignment: center;
@@ -71,42 +84,72 @@ dropdown {
     .title {
         width: auto;
         alignment: center;
-        height: $component-size;
+        height: theme.$component-size;
         border-width: 1px;
         child-left: 4px;
         child-right: 4px;
+        background-color: theme.$gray-50;
+        &:active {
+            background-color: theme.$gray-100;
+        }
+        &.on {
+            background-color: theme.$gray-200;
+        }
     }
 
-    popup label.option {
+    popup label.option,
+    popup label.value {
         width: 1s;
         child-left: 4px;
+        background-color: theme.$gray-50;
+        &:hover {
+            background-color: theme.$gray-100;
+        }
+        &:active {
+            background-color: theme.$gray-200;
+        }
+        &.selected {
+            background-color: theme.$gray-200;
+        }
     }
 }
 
 paramdropdown {
     dropdown {
         width: 100%;
-
-        popup {
-            label {
-                width: 1s;
-                child-left: 4px;
-            }
-        }
     }
+    height: theme.$component-size;
+}
 
-    height: $component-size;
+button.ghost,
+dropdown.ghost .title {
+    background-color: transparent;
+    border-color: transparent;
+    &:hover {
+        background-color: theme.$gray-50;
+        border-color: theme.$gray-950;
+    }
+    &:active {
+        background-color: theme.$gray-100;
+    }
+    &.on {
+        background-color: theme.$gray-200;
+    }
 }
 
 popup {
     border-width: 1px;
+    background-color: theme.$gray-100;
+    box-shadow: 2px 2px 0px 0px theme.$gray-950;
 }
 
 textbox {
     child-left: 4px;
     child-right: 4px;
-    font-family: $font;
-    height: $component-size;
+    font-family: theme.$font;
+    height: theme.$component-size;
+    background-color: theme.$gray-50;
+    box-shadow: 0px -1px 0px 0px theme.$gray-950 inset;
 }
 
 paramslider {
@@ -125,11 +168,24 @@ paramslider {
         }
     }
 
+    .value {
+        color: theme.$gray-700;
+    }
+
     .track {
-        height: $component-size;
+        height: theme.$component-size;
         border-width: 1px;
         child-left: -0.5px;
         child-right: -0.5px;
+        background-color: theme.$gray-50;
+
+        .slider {
+            background-color: theme.$gray-300;
+        }
+
+        .head {
+            background-color: theme.$gray-950;
+        }
     }
 
     .ticks {
@@ -139,6 +195,7 @@ paramslider {
         .tick {
             height: 4px;
             width: 1px;
+            background-color: theme.$gray-950;
 
             &.short {
                 height: 3px;
@@ -147,7 +204,7 @@ paramslider {
 
         .tick-label {
             height: 6px;
-            font-size: $text-sm;
+            font-size: map.get(theme.$font-sizes, "sm");
         }
     }
 
@@ -157,20 +214,20 @@ paramslider {
 }
 
 switch {
-    height: $component-size;
-    width: $component-size * 2;
+    height: theme.$component-size;
+    width: theme.$component-size * 2;
 
     $transition-duration: 150ms;
     $transition-timing: cubic-bezier(0.25, 1, 0.5, 1);
 
     .switch-handle-bg {
         border-width: 1px;
-        height: $component-size;
-        width: $component-size * 2;
+        height: theme.$component-size;
+        width: theme.$component-size * 2;
     }
 
     .switch-handle {
-        size: $component-size - 4px;
+        size: theme.$component-size - 4px;
         left: 2px;
         top: 2px;
         transition: left $transition-duration $transition-timing;
@@ -180,51 +237,112 @@ switch {
         left: 16px;
         transition: left $transition-duration $transition-timing;
     }
+
+    .switch-handle-bg {
+        background-color: theme.$gray-50;
+    }
+
+    &:checked .switch-handle-bg {
+        background-color: theme.$gray-950;
+    }
+
+    &:active .switch-handle-bg {
+        background-color: theme.$gray-100;
+    }
+
+    &:checked:active .switch-handle-bg {
+        background-color: theme.$gray-700;
+    }
+
+    .switch-handle {
+        background-color: theme.$gray-950;
+    }
+
+    &:checked .switch-handle {
+        background-color: theme.$gray-50;
+    }
+}
+
+switch.disabled,
+.disabled switch {
+    pointer-events: none;
+
+    * {
+        border-color: theme.$gray-600;
+    }
+
+    .switch-handle-bg,
+    &:checked .switch-handle-bg {
+        background-color: theme.$gray-100;
+    }
+
+    .switch-handle,
+    &:checked .switch-handle {
+        background-color: theme.$gray-600;
+    }
 }
 
 paramswitch {
-    height: $component-size;
-    width: $component-size * 2;
+    height: theme.$component-size;
+    width: theme.$component-size * 2;
+    .value {
+        color: theme.$gray-700;
+    }
+
+    .track {
+        background-color: theme.$gray-50;
+
+        .slider {
+            background-color: theme.$gray-300;
+        }
+
+        .head {
+            background-color: theme.$gray-950;
+        }
+    }
+
+    .ticks .tick {
+        background-color: theme.$gray-950;
+    }
 }
 
 checkbox {
     border-width: 1px;
-    size: $component-size;
+    size: theme.$component-size;
+    background-color: theme.$gray-50;
+
+    &:active {
+        background-color: theme.$gray-100;
+    }
 }
 
 radiobutton {
-    size: $component-size;
+    size: theme.$component-size;
     border-width: 1px;
     border-radius: 50%;
-}
+    color: theme.$gray-950;
+    background-color: theme.$gray-50;
 
-radiobutton .inner {
-    width: 0px;
-    height: 0px;
-    border-radius: 50%;
-}
+    &:active {
+        background-color: theme.$gray-100;
+    }
 
-radiobutton:checked .inner {
-    width: $component-size - 6px;
-    height: $component-size - 6px;
-}
+    .inner {
+        background-color: theme.$gray-950;
+        width: 0px;
+        height: 0px;
+        border-radius: 50%;
+    }
 
-tag {
-    height: $component-size;
-    child-left: 6px;
-    child-right: 6px;
-    border-radius: 50%;
-    width: auto;
-    alignment: center;
-
-    & > * {
-        width: auto;
-        alignment: center;
+    &:checked .inner {
+        background-color: theme.$gray-950;
+        width: theme.$component-size - 6px;
+        height: theme.$component-size - 6px;
     }
 }
 
 selector {
-    height: $component-size;
+    height: theme.$component-size;
     border-width: 1px;
     width: auto;
 
@@ -289,7 +407,33 @@ scrollview {
     }
 }
 
+tag {
+    background-color: theme.$gray-200;
+    height: theme.$component-size;
+    child-left: 6px;
+    child-right: 6px;
+    border-radius: 50%;
+    width: auto;
+    alignment: center;
+
+    & > * {
+        width: auto;
+        alignment: center;
+    }
+
+    &.primary {
+        background-color: theme.$gray-950;
+        color: theme.$gray-50;
+    }
+}
+
+image {
+    background-size: cover;
+}
+
 .divider {
+    background-color: theme.$gray-950;
+
     &.horizontal {
         height: 1px;
         width: 1s;
@@ -301,571 +445,23 @@ scrollview {
     }
 }
 
-:root {
-    color: $gray-950;
-    background-color: $gray-100;
+oscilloscope {
+    color: theme.$gray-500;
 
-    $red: rgb(208, 10, 10);
-    $orange: rgb(216, 92, 0);
-    $yellow: rgb(216, 172, 15);
-    $green: rgb(7, 162, 21);
-    $cyan: rgb(10, 169, 183);
-    $blue: rgb(32, 121, 209);
-    $violet: rgb(149, 72, 203);
-    $pink: rgb(198, 49, 151);
-
-    .bg-red {
-        background-color: $red;
-        color: $gray-50;
-    }
-
-    .bg-orange {
-        background-color: $orange;
-        color: $gray-50;
-    }
-
-    .bg-yellow {
-        background-color: $yellow;
-        color: $gray-50;
-    }
-
-    .bg-green {
-        background-color: $green;
-        color: $gray-50;
-    }
-
-    .bg-cyan {
-        background-color: $cyan;
-        color: $gray-50;
-    }
-
-    .bg-blue {
-        background-color: $blue;
-        color: $gray-50;
-    }
-
-    .bg-violet {
-        background-color: $violet;
-        color: $gray-50;
-    }
-
-    .bg-pink {
-        background-color: $pink;
-        color: $gray-50;
-    }
-
-    .fg-red {
-        color: $red;
-    }
-
-    .fg-orange {
-        color: $orange;
-    }
-
-    .fg-yellow {
-        color: $yellow;
-    }
-
-    .fg-green {
-        color: $green;
-    }
-
-    .fg-cyan {
-        color: $cyan;
-    }
-
-    .fg-blue {
-        color: $blue;
-    }
-
-    .fg-violet {
-        color: $violet;
-    }
-
-    .fg-pink {
-        color: $pink;
-    }
-
-    .disabled {
-        color: $gray-500;
-    }
-
-    .bg-elevated {
-        background-color: $gray-50;
-    }
-
-    button:focus-visible,
-    dropdown .title:focus-visible,
-    switch:focus-visible .switch-handle-bg,
-    checkbox:focus-visible,
-    radiobutton:focus-visible,
-    paramslider:focus-visible .track {
-        box-shadow:
-            0px 0px 0px 1.5px $gray-50,
-            0px 0px 0px 3px $gray-950;
-    }
-
-    * {
-        border-color: $gray-950;
-    }
-
-    button,
-    dropdown .title {
-        background-color: $gray-50;
-
-        &:active {
-            background-color: $gray-100;
-        }
-
-        &.on {
-            background-color: $gray-200;
-        }
-
-        &.primary {
-            background-color: $gray-950;
-            color: $gray-50;
-
-            &:active {
-                background-color: $gray-700;
-            }
-        }
-
-        &.destructive {
-            background-color: $red;
-            color: $gray-50;
-            border-color: $red;
-
-            &:active {
-                background-color: darken($red, 10%);
-            }
-        }
-    }
-
-    button.ghost,
-    dropdown.ghost .title {
-        background-color: transparent;
-        border-color: transparent;
-        &:hover {
-            background-color: $gray-50;
-            border-color: $gray-950;
-        }
-        &:active {
-            background-color: $gray-100;
-        }
-        &.on {
-            background-color: $gray-200;
-        }
-    }
-
-    dropdown popup label.option,
-    paramdropdown dropdown popup label {
-        background-color: $gray-50;
-        &:hover {
-            background-color: $gray-100;
-        }
-        &:active {
-            background-color: $gray-200;
-        }
-        &.selected {
-            background-color: $gray-200;
-        }
-    }
-
-    paramdropdown {
-        .value {
-            width: 1s;
-        }
-    }
-
-    popup {
-        background-color: $gray-100;
-        box-shadow: 2px 2px 0px 0px $gray-950;
-    }
-
-    textbox {
-        background-color: $gray-50;
-        box-shadow: 0px -1px 0px 0px $gray-950 inset;
-    }
-
-    paramslider {
-        .value {
-            color: $gray-700;
-        }
-
-        .track {
-            background-color: $gray-50;
-
-            .slider {
-                background-color: $gray-300;
-            }
-
-            .head {
-                background-color: $gray-950;
-            }
-        }
-
-        .ticks .tick {
-            background-color: $gray-950;
-        }
-    }
-
-    switch {
-        .switch-handle-bg {
-            background-color: $gray-50;
-        }
-
-        &:checked .switch-handle-bg {
-            background-color: $gray-950;
-        }
-
-        &:active .switch-handle-bg {
-            background-color: $gray-100;
-        }
-
-        &:checked:active .switch-handle-bg {
-            background-color: $gray-700;
-        }
-
-        .switch-handle {
-            background-color: $gray-950;
-        }
-
-        &:checked .switch-handle {
-            background-color: $gray-50;
-        }
-    }
-
-    switch.disabled,
-    .disabled switch {
-        pointer-events: none;
-
-        * {
-            border-color: $gray-600;
-        }
-
-        .switch-handle-bg,
-        &:checked .switch-handle-bg {
-            background-color: $gray-100;
-        }
-
-        .switch-handle,
-        &:checked .switch-handle {
-            background-color: $gray-600;
-        }
-    }
-
-    checkbox {
-        background-color: $gray-50;
-
-        &:active {
-            background-color: $gray-100;
-        }
-    }
-
-    radiobutton {
-        color: $gray-950;
-        background-color: $gray-50;
-
-        &:active {
-            background-color: $gray-100;
-        }
-
-        .inner {
-            background-color: $gray-950;
-        }
-
-        &:checked .inner {
-            background-color: $gray-950;
-        }
-    }
-
-    tag {
-        background-color: $gray-200;
-
-        &.primary {
-            background-color: $gray-950;
-            color: $gray-50;
-        }
-    }
-
-    scrollbar .thumb {
-        background-color: $gray-300;
-    }
-
-    .divider {
-        background-color: $gray-950;
-    }
-
-    oscilloscope {
-        color: $gray-500;
-
-        &.overlay {
-            opacity: 0.33;
-        }
-    }
-
-    grid {
-        color: $gray-950;
-        opacity: 0.05;
-    }
-
-    unit-ruler label {
-        font-size: $text-sm;
-    }
-
-    @each $direction in ("top", "right", "bottom", "left") {
-        .fade-#{$direction} {
-            background-image: linear-gradient(
-                to #{$direction},
-                transparent,
-                transparentize($gray-50, 0.9)
-            );
-        }
+    &.overlay {
+        opacity: 0.33;
     }
 }
 
-.dark {
-    color: $gray-50;
-    background-color: $gray-900;
+grid {
+    color: theme.$gray-950;
+    opacity: 0.05;
+}
 
-    $red: #ff3b3b;
-    $orange: #ff8316;
-    $yellow: #f6f615;
-    $green: #26f638;
-    $cyan: #3ceefe;
-    $blue: #3e8eff;
-    $violet: #af3fff;
-    $pink: #f658c4;
+unit-ruler label {
+    font-size: map.get(theme.$font-sizes, "sm");
+}
 
-    .bg-red {
-        background-color: $red;
-        color: $gray-950;
-    }
-
-    .bg-orange {
-        background-color: $orange;
-        color: $gray-950;
-    }
-
-    .bg-yellow {
-        background-color: $yellow;
-        color: $gray-950;
-    }
-
-    .bg-green {
-        background-color: $green;
-        color: $gray-950;
-    }
-
-    .bg-cyan {
-        background-color: $cyan;
-        color: $gray-950;
-    }
-
-    .bg-blue {
-        background-color: $blue;
-        color: $gray-950;
-    }
-
-    .bg-violet {
-        background-color: $violet;
-        color: $gray-950;
-    }
-
-    .bg-pink {
-        background-color: $pink;
-        color: $gray-950;
-    }
-
-    .bg-elevated {
-        background-color: $gray-800;
-    }
-
-    button:focus-visible,
-    dropdown .title:focus-visible,
-    switch:focus-visible .switch-handle-bg,
-    checkbox:focus-visible,
-    radiobutton:focus-visible,
-    paramslider:focus-visible .track {
-        box-shadow:
-            0px 0px 0px 1.5px $gray-950,
-            0px 0px 0px 3px $gray-500;
-    }
-
-    * {
-        border-color: $gray-500;
-    }
-
-    button {
-        background-color: $gray-800;
-
-        &:active {
-            background-color: $gray-700;
-        }
-
-        &.on {
-            background-color: $gray-600;
-        }
-
-        &.primary {
-            background-color: $gray-100;
-            color: $gray-950;
-            border-color: $gray-100;
-
-            &:active {
-                background-color: $gray-200;
-            }
-        }
-
-        &.destructive {
-            background-color: $red;
-            color: $gray-950;
-            border-color: $red;
-
-            &:active {
-                background-color: lighten($red, 10%);
-            }
-        }
-    }
-
-    dropdown {
-        .title {
-            background-color: $gray-800;
-
-            &:active {
-                background-color: $gray-700;
-            }
-        }
-    }
-
-    paramdropdown dropdown popup label {
-        &:hover {
-            background-color: $gray-700;
-        }
-
-        &.selected {
-            background-color: $gray-600;
-        }
-    }
-
-    dropdown popup label.option,
-    paramdropdown dropdown popup label {
-        background-color: $gray-800;
-
-        &:hover {
-            background-color: $gray-700;
-        }
-        &:active {
-            background-color: $gray-600;
-        }
-        &.selected {
-            background-color: $gray-600;
-        }
-    }
-
-    paramdropdown {
-        .value {
-            width: 1s;
-        }
-    }
-
-    popup {
-        background-color: $gray-800;
-    }
-
-    textbox {
-        background-color: $gray-800;
-        box-shadow: 0px -1px 0px 0px $gray-500 inset;
-    }
-
-    paramslider {
-        .value {
-            color: $gray-300;
-        }
-
-        .track {
-            background-color: $gray-800;
-
-            .slider {
-                background-color: $gray-600;
-            }
-
-            .head {
-                background-color: $gray-500;
-            }
-        }
-
-        .ticks .tick {
-            background-color: $gray-500;
-        }
-    }
-
-    switch {
-        .switch-handle-bg {
-            background-color: $gray-800;
-        }
-
-        &:checked .switch-handle-bg {
-            background-color: $gray-100;
-            border-color: $gray-100;
-        }
-
-        &:active .switch-handle-bg {
-            background-color: $gray-700;
-        }
-
-        &:checked:active .switch-handle-bg {
-            background-color: $gray-200;
-        }
-
-        .switch-handle {
-            background-color: $gray-100;
-        }
-
-        &:checked .switch-handle {
-            background-color: $gray-950;
-        }
-    }
-
-    checkbox {
-        background-color: $gray-800;
-
-        &:active {
-            background-color: $gray-700;
-        }
-    }
-
-    radiobutton {
-        color: $gray-100;
-        background-color: $gray-800;
-
-        &:active {
-            background-color: $gray-700;
-        }
-
-        .inner {
-            background-color: $gray-100;
-        }
-
-        &:checked .inner {
-            background-color: $gray-100;
-        }
-    }
-
-    tag {
-        background-color: $gray-700;
-
-        &.primary {
-            background-color: $gray-100;
-            color: $gray-950;
-        }
-    }
-
-    scrollbar .thumb {
-        background-color: $gray-600;
-    }
-
-    .divider {
-        background-color: $gray-600;
-    }
+scrollbar .thumb {
+    background-color: theme.$gray-300;
 }
