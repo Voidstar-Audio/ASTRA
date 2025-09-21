@@ -612,6 +612,16 @@ scrollview {
     unit-ruler label {
         font-size: $text-sm;
     }
+
+    @each $direction in ("top", "right", "bottom", "left") {
+        .fade-#{$direction} {
+            background-image: linear-gradient(
+                to #{$direction},
+                transparent,
+                transparentize($gray-50, 0.9)
+            );
+        }
+    }
 }
 
 .dark {
